@@ -1,0 +1,6 @@
+# Ignore simulation and output files
+*.vcd
+*.out
+
+# VSCode settings (optional)
+.vscode/
