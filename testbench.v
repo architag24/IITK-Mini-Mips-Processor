@@ -17,14 +17,14 @@ module testbench;
     initial begin
         $monitor("Time: %0t | PC: %h | Instruction: %h | Reg[8]: %h | Reg[9]: %h | Reg[10]: %h", 
                          $time, dut.pc_current, dut.instruction, dut.reg_file.registers[8], 
-                         dut.reg_file.registers[9], dut.reg_file.registers[10]);
+                         dut.reg_file.registers[9], dut.reg_file.registers[10], dut.reg_file.registers[12], dut.reg_file.registers[13], dut.reg_file.registers[14]);
         $display("===== IITK-Mini-MIPS Simulation Start =====");
         $dumpfile("cpu.vcd");
         $dumpvars(0, dut);
 
         #10 reset = 0;
 
-        #100 $display("===== Simulation Done =====");
+        #200 $display("===== Simulation Done =====");
         $finish;
     end
 

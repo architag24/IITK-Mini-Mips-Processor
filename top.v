@@ -25,7 +25,8 @@ module top (
     // Control Signals
     wire reg_dst, alu_src, mem_to_reg, reg_write;
     wire mem_read, mem_write, branch, jump;
-    
+    wire is_imm_unsigned;                      //added to fix ori,xori
+
     wire [3:0] alu_control;
     wire [4:0] write_reg;
 
@@ -58,6 +59,9 @@ module top (
         .address(address)
     );
 
+    wire [31:0] imm_ext = (is_imm_unsigned) ? {16'b0, immediate} : {{16{immediate[15]}}, immediate};
+    assign alu_input_b = (alu_src) ? imm_ext : reg_data2;
+
     // === Controller ===
     controller control_unit (
         .opcode(opcode),
@@ -88,7 +92,7 @@ module top (
         .read_data2(reg_data2)
     );
 
-    // === ALU Operand Select ===
+    // === ALU Operand Select ===    whether to choose immediate or reg_data2
     assign alu_input_b = (alu_src) ? {{16{immediate[15]}}, immediate} : reg_data2;
 
     alu alu_inst (
@@ -101,7 +105,7 @@ module top (
     );
 
     // === Data Memory Placeholder ===
-    assign write_data = alu_result; // for now (no mem_to_reg support yet)
+    //assign write_data = alu_result; // for now (no mem_to_reg support yet)
 
     // === Data Memory ===
     wire [31:0] mem_data_out;
