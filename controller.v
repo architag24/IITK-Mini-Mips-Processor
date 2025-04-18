@@ -130,6 +130,21 @@ module controller (
                     6'b000011: alu_control = 4'b1000; // sra
                     6'b101010: alu_control = 4'b1001; // slt
                     6'b101001: alu_control = 4'b1010; // seq
+                    6'b011000: alu_control = 4'b1100; // mul,low
+                    6'b011001: alu_control = 4'b1110; //mul,high
+                    6'b011010: alu_control = 4'b1101; // div  
+                    6'b011000: begin // mult
+                        alu_control = 4'b1000;
+                        reg_write = 0; // no direct reg write
+                    end
+                    6'b010000: begin // mfhi
+                        alu_control = 4'b1001;
+                        reg_write = 1;
+                    end
+                    6'b010010: begin // mflo
+                        alu_control = 4'b1010;
+                        reg_write = 1;
+                    end  
                     default:   alu_control = 4'b0000;
                 endcase
             end
@@ -205,6 +220,12 @@ module controller (
                 branch      = 1;
                 alu_control = 4'b0011;
             end
+
+            6'b000101: begin // bleq
+            branch      = 1;
+            alu_control = 4'b1011; // add a new ALU control for "a <= b"
+            end
+
 
             6'b000010: begin // j
                 jump = 1;

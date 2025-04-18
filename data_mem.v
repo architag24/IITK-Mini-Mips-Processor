@@ -9,7 +9,18 @@ module data_mem (
 
     reg [31:0] memory [0:1023]; // 1K words = 4KB memory
 
-    wire [9:0] word_addr = addr[11:2]; // word-aligned
+    initial begin
+        memory[0] = 32'b00000000000000000000000000000100; // 4
+        memory[1] = 32'b00000000000000000000000000000011; // 3
+        memory[2] = 32'b00000000000000000000000000000101; // 5
+        memory[3] = 32'b00000000000000000000000000000001; // 1
+        memory[4] = 32'b00000000000000000000000000000010; // 2
+        memory[5] = 32'b00000000000000000000000000000110; // 6
+        memory[6] = 32'b00000000000000000000000000000111; // 7
+//        memory[31] = 32'b00000000000000000000000000000100;
+    end
+
+    wire [9:0] word_addr = addr[9:0]; // word-aligned
 
     always @(posedge clk) begin
         if (mem_write) begin
@@ -25,3 +36,4 @@ module data_mem (
     end
 
 endmodule
+

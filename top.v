@@ -30,6 +30,13 @@ module top (
     wire [3:0] alu_control;
     wire [4:0] write_reg;
 
+    // ==BRANCHING==
+    wire [31:0] branch_offset = imm_ext << 2;
+    wire [31:0] branch_target = pc_current + 4 + branch_offset;
+
+    reg [31:0] hi, lo;
+
+
     // === PC Logic ===
     pc pc_inst (
         .clk(clk),
@@ -38,7 +45,10 @@ module top (
         .curr_pc(pc_current)
     );
 
-    assign pc_next = pc_current + 4; // no branching yet
+    //assign pc_next = pc_current + 4; // no branching yet
+    //assign pc_next = (branch && zero) ? branch_target : pc_current + 4;
+    wire branch_taken = branch && zero;
+    assign pc_next = branch_taken ? branch_target : pc_current + 4;
 
     // === Instruction Memory ===
     instruction_mem imem (
@@ -59,8 +69,7 @@ module top (
         .address(address)
     );
 
-    wire [31:0] imm_ext = (is_imm_unsigned) ? {16'b0, immediate} : {{16{immediate[15]}}, immediate};
-    assign alu_input_b = (alu_src) ? imm_ext : reg_data2;
+//    wire [31:0] imm_ext = (is_imm_unsigned) ? {16'b0, immediate} : {{16{immediate[15]}}, immediate};
 
     // === Controller ===
     controller control_unit (
@@ -91,9 +100,12 @@ module top (
         .read_data1(reg_data1),
         .read_data2(reg_data2)
     );
+    
+     wire [31:0] imm_ext = {{16{immediate[15]}}, immediate};
+    assign alu_input_b = (alu_src) ? imm_ext : reg_data2;
 
     // === ALU Operand Select ===    whether to choose immediate or reg_data2
-    assign alu_input_b = (alu_src) ? {{16{immediate[15]}}, immediate} : reg_data2;
+    //assign alu_input_b = (alu_src) ? {{16{immediate[15]}}, immediate} : reg_data2;
 
     alu alu_inst (
         .a(reg_data1),

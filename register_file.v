@@ -11,6 +11,10 @@ module register_file (
     reg [31:0] registers [0:31];  // 32 general-purpose registers
     (* keep *) reg [31:0] register [0:31];  // Makes it visible in waveform + hierarchical references (not used rn probably)
 
+    // initial begin
+    //     // set $31 to 7 in binary
+    //     registers[31] = 32'b00000000000000000000000000000111; // 7
+    // end
 
     integer i;
 
