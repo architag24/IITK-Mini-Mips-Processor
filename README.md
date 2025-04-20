@@ -1,1 +1,3 @@
 # IITK-Mini-Mips-Processor
+
+This is a Mini processor which executes a subset of the functions executed by actual MIPS processor by passing custom isntructions according to the assigned opcodes and function codes. All the modules get instantiated in the file top.v following the steps of fetching, decoding, executing instructions and writing back to the memory by taking one instruction at a time according to the updated pc. 

@@ -32,8 +32,8 @@
 
 module alu (
     input [31:0] a, b,
-    input [4:0] shamt,              // shift amount for shift ops
-    input [3:0] alu_control,        // control signal selects operation
+    input [4:0] shamt,
+    input [3:0] alu_control,
     output reg [31:0] result,
     output zero,
     output reg [31:0] hi,
@@ -43,7 +43,7 @@ module alu (
     wire signed [31:0] a_signed = a;
     wire signed [31:0] b_signed = b;
     assign product = a*b;
-    
+
     always @(*) begin
         case (alu_control)
             4'b0000: result = a & b;                    // and
@@ -62,7 +62,7 @@ module alu (
             4'b1010: result = (a == b) ? 32'd1 : 32'd0;  // seq
             4'b1100: result = product[31:0];              // mul low
             4'b1110: result = product[63:32];             //mul high
-            4'b1101: result = (b != 0) ? a / b : 32'd0; // div (guard against div by 0)
+            4'b1101: result = (b != 0) ? a / b : 32'd0;
             // 4'b1000: begin // MULT
             //     {hi, lo} = $signed(a) * $signed(b); // signed multiply
             //     result = 32'b0; // result isn't used directly

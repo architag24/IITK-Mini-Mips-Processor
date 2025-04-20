@@ -9,7 +9,7 @@ module register_file (
 );
 
     reg [31:0] registers [0:31];  // 32 general-purpose registers
-    (* keep *) reg [31:0] register [0:31];  // Makes it visible in waveform + hierarchical references (not used rn probably)
+    //(* keep *) reg [31:0] register [0:31];  // Makes it visible in waveform + hierarchical references (not used rn probably)
 
     // initial begin
     //     // set $31 to 7 in binary

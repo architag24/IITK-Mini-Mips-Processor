@@ -36,7 +36,6 @@ module top (
 
     reg [31:0] hi, lo;
 
-
     // === PC Logic ===
     pc pc_inst (
         .clk(clk),
@@ -100,7 +99,7 @@ module top (
         .read_data1(reg_data1),
         .read_data2(reg_data2)
     );
-    
+
      wire [31:0] imm_ext = {{16{immediate[15]}}, immediate};
     assign alu_input_b = (alu_src) ? imm_ext : reg_data2;
 
@@ -138,7 +137,6 @@ module top (
     $display("PC: %h | Instruction: %h", pc_current, instruction);
     end
 
-
     always @(posedge clk) begin
     if (!reset) begin
         $display("reg[8] (t0)  = %d", reg_file.register[8]);
@@ -148,6 +146,5 @@ module top (
         $display("mem[0]       = %d", dmem.memory[0]);
     end
     end
-
 
 endmodule
